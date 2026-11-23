@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Soap Film starter: a bubble button</title>
+<style>
+  html { background: #FFFFFF; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif; color: #16161A; }
+  main { width: min(480px, 100vw - 32px); text-align: center; }
+  p { color: #888894; font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <soap-bubble-button>Press me</soap-bubble-button>
+  <p>The smallest whole example: one bubble on a wire ring. Press it and the film dimples; let go and it pops and fills again.</p>
+</main>
+<!-- the shared core: one clock, the sound, and the element base class -->
+<script src="core.js"></script>
+<script>
+// A soap-film button in about 150 lines, built the way the real controls are:
+//   1. a thickness field on a small CPU grid, stirred and drained a little every step (the "fluid")
+//   2. a fragment shader that turns thickness into thin-film colour, with a rim, a highlight and a wobble
+//   3. an element that extends SoapFilm.Base, puts a real <button> over the drawing and wires it up
+(() => {
+const N = 32;   // the grid is N x N; the real controls use 64 to 80 with velocity and pressure as well
+
+const FRAG = `#version 300 es
+precision highp float;
+uniform sampler2D uThick; uniform vec2 uRes; uniform float uTime, uPress, uPop, uWob, uAlpha;
+out vec4 o;
+// thin-film interference: light reflected from the front and back of a soap layer dNm nanometres thick
+vec3 film(float dNm, float cosT) {
+  float opd = 2.0 * 1.333 * dNm * cosT;
+  const float WL[6] = float[6](645.0, 595.0, 545.0, 500.0, 465.0, 430.0);
+  const vec3 RGB[6] = vec3[6](vec3(.76,.06,0.), vec3(.48,.36,0.), vec3(.10,.56,.06), vec3(0.,.44,.34), vec3(.02,.14,.68), vec3(.28,.02,.58));
+  vec3 c = vec3(0.);
+  for (int i = 0; i < 6; i++) { float s = sin(3.14159265 * opd / WL[i]); c += RGB[i] * s * s; }
+  float l = dot(c, vec3(.299, .587, .114));
+  c = mix(vec3(l), c, 1.5);
+  return pow(max(vec3(1e-4), c), vec3(.92)) * smoothstep(14.0, 62.0, dNm);   // pow bases clamped: strict drivers blank on NaN
+}
+void main() {
+  vec2 p = (gl_FragCoord.xy - .5 * uRes) / (.5 * min(uRes.x, uRes.y));
+  float ang = atan(p.y, p.x);
+  float R = .78 + uWob * .035 * sin(2. * ang + uTime * 9.) + uWob * .02 * sin(3. * ang - uTime * 12.);
+  float r = length(p) / R;
+  // the wire ring
+  float ring = smoothstep(.022, .0, abs(r - 1.0) - .012);
+  vec3 wire = mix(vec3(.62, .64, .70), vec3(.95), smoothstep(-.6, .9, p.y + p.x * .3));
+  if (r > 1.06) { o = vec4(0.); return; }
+  // the film: a dome that a press pushes in, with thickness from the grid
+  vec2 uv = clamp(p / R * .5 + .5, 0., 1.);
+  float d = 160. + texture(uThick, uv).r * 520.;
+  float z = sqrt(max(1e-4, 1. - r * r)) * (1. - .55 * uPress * exp(-r * r * 3.));
+  vec3 n = normalize(vec3(p / R, z + .2));
+  float cosT = clamp(n.z, .05, 1.);
+  float fres = pow(max(1e-4, 1. - cosT), 3.);
+  vec3 c = film(d, cosT) * (.6 + .8 * fres);
+  float spec = pow(max(1e-4, dot(reflect(-vec3(0, 0, 1), n), normalize(vec3(-.45, .55, .7)))), 60.);
+  float a = clamp(.26 + fres * .7 + spec, 0., 1.) * smoothstep(1.0, .985, r) * uAlpha;
+  // the pop: a hole that opens from where it was pressed and races to the rim
+  if (uPop > 0.) { float hole = smoothstep(uPop - .04, uPop, r); a *= hole; c += vec3(.9) * smoothstep(.05, .0, abs(r - uPop)) * hole; }
+  vec3 col = c + vec3(spec);
+  o = vec4(mix(col * a, wire, ring), max(a, ring));   // premultiplied
+}`;
+
+class Engine {
+  constructor(mount, { width, height, dpr, audio }) {
+    this.width = width; this.height = height; this.audio = audio;
+    this.wrap = document.createElement('div');
+    this.wrap.style.cssText = `position:relative;width:${width}px;height:${height}px`;
+    const cv = document.createElement('canvas');
+    cv.width = width * dpr; cv.height = height * dpr; cv.style.cssText = 'width:100%;height:100%;display:block';
+    this.wrap.append(cv); mount.append(this.wrap);
+    const gl = this.gl = cv.getContext('webgl2', { premultipliedAlpha: true, alpha: true });
+    if (!gl) throw new Error('WebGL2 unavailable');
+    const sh = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); if (!gl.getShaderParameter(x, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; };
+    const pr = this.prog = gl.createProgram();
+    gl.attachShader(pr, sh(gl.VERTEX_SHADER, '#version 300 es\nvoid main(){vec2 p=vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.;gl_Position=vec4(p,0,1);}'));
+    gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG)); gl.linkProgram(pr);
+    this.u = Object.fromEntries(['uThick', 'uRes', 'uTime', 'uPress', 'uPop', 'uWob', 'uAlpha'].map((k) => [k, gl.getUniformLocation(pr, k)]));
+    this.tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, this.tex);
+    for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, k, v);
+    this.d = new Float32Array(N * N); this.tmp = new Float32Array(N * N); this.px = new Uint8Array(N * N);
+    for (let i = 0; i < N * N; i++) this.d[i] = 0.35 + 0.3 * Math.random();
+    this.t = 0; this.press = 0; this.held = false; this.pop = 0; this.alpha = 1; this.wob = 0; this.wobV = 0;
+  }
+  hit(x, y) { return Math.hypot(x - this.width / 2, y - this.height / 2) < Math.min(this.width, this.height) * 0.4; }
+  setHolding(on) {
+    if (on && this.pop === 0 && this.alpha >= 1) { this.held = true; this.wobV += 6; this.audio.playTap(700); }
+    else if (!on && this.held) { this.held = false; this.pop = 0.001; this.audio.playPop(0.9); }
+  }
+  step(h) {
+    this.t += h;
+    this.press += ((this.held ? 1 : 0) - this.press) * Math.min(1, h * 14);
+    this.wobV += -this.wob * 260 * h; this.wobV *= Math.exp(-5 * h); this.wob += this.wobV * h;
+    if (this.pop > 0) { this.pop += h * 3.2; if (this.pop > 1.1) { this.pop = 0; this.alpha = 0; } }
+    if (this.alpha < 1 && this.pop === 0) { this.alpha = Math.min(1, this.alpha + h * 1.6); if (this.alpha >= 1) this.wobV += 4; }
+    // the "fluid": a slow swirl round the centre, gravity draining the film thinner at the top, and a little diffusion
+    const { d, tmp } = this, sw = 0.9 + this.press * 4;
+    for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+      const x = i / (N - 1) - 0.5, y = j / (N - 1) - 0.5;
+      const sx = Math.min(N - 1.001, Math.max(0, i + y * sw * h * N)), sy = Math.min(N - 1.001, Math.max(0, j - x * sw * h * N));
+      const i0 = sx | 0, j0 = sy | 0, fx = sx - i0, fy = sy - j0, k = j0 * N + i0;
+      const v = (d[k] * (1 - fx) + d[k + 1] * fx) * (1 - fy) + (d[k + N] * (1 - fx) + d[k + N + 1] * fx) * fy;
+      tmp[j * N + i] = v + ((1 - y * 1.6) * 0.42 - v) * h * 0.35;   // texture row 0 is the bottom: thicker there
+    }
+    for (let i = 0; i < N * N; i++) { d[i] = tmp[i]; this.px[i] = Math.max(0, Math.min(255, d[i] * 255)); }
+  }
+  render() {
+    const gl = this.gl, u = this.u;
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(this.prog);
+    gl.bindTexture(gl.TEXTURE_2D, this.tex); gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, N, N, 0, gl.RED, gl.UNSIGNED_BYTE, this.px);
+    gl.uniform1i(u.uThick, 0); gl.uniform2f(u.uRes, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    gl.uniform1f(u.uTime, this.t); gl.uniform1f(u.uPress, this.press); gl.uniform1f(u.uPop, this.pop);
+    gl.uniform1f(u.uWob, Math.max(-1, Math.min(1, this.wob))); gl.uniform1f(u.uAlpha, this.alpha);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+}
+
+class SoapBubbleButton extends SoapFilm.Base {
+  static size = (w) => Math.min(w, 240);
+  static minWidth = 160;
+  static css = ':host{max-width:240px;margin:0 auto}.box{cursor:pointer}';
+  overlay() { return `<button class="sr" type="button" part="button">${SoapFilm.esc(this.textContent.trim() || 'Button')}</button>`; }
+  create(mount, o) { return new Engine(mount, o); }
+  wire() {
+    const b = this.$('button'), box = this.box;
+    box.addEventListener('pointerdown', (ev) => { const [x, y] = this.local(ev); if (!this.engine?.hit(x, y)) return; ev.preventDefault(); b.focus({ preventScroll: true }); box.setPointerCapture?.(ev.pointerId); this.engine.setHolding(true); });
+    const up = () => { if (this.engine?.held) { this.engine.setHolding(false); this.emit('press'); } };
+    box.addEventListener('pointerup', up); box.addEventListener('pointercancel', up);
+    b.addEventListener('keydown', (ev) => { if ((ev.key === ' ' || ev.key === 'Enter') && !ev.repeat) { ev.preventDefault(); this.engine?.setHolding(true); } });
+    b.addEventListener('keyup', (ev) => { if (ev.key === ' ' || ev.key === 'Enter') up(); });
+  }
+}
+SoapFilm.define('soap-bubble-button', SoapBubbleButton);
+})();
+</script>
+</body>
+</html>

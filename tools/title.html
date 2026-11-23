@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Soap Film UI title</title>
+<style>
+  /* The title card for the README and the gallery's link preview: all eight on one 1600 by 900 frame.
+     node tools/shot.mjs http://localhost:8000/tools/title.html gallery/title.jpg 1600 900 2 (with the JS in tools/title.js) */
+  html, body { margin: 0; background: #FFFFFF; color: #16161A; font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif; }
+  body { width: 1600px; height: 900px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+  header { text-align: center; padding: 42px 0 0; }
+  h1 { margin: 0; font-size: 64px; letter-spacing: -0.04em; font-weight: 680; }
+  p { margin: 8px 0 0; color: #6a6a74; font-size: 19px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 380px); justify-content: center; align-content: center; gap: 0 14px; }
+  .grid > * { width: 380px; }
+</style>
+</head>
+<body>
+<header><h1>Soap Film UI</h1><p>Eight controls made of soap film. One file each, no dependencies.</p></header>
+<div class="grid">
+  <soap-hold-button label="Hold to send"></soap-hold-button>
+  <soap-menu><option value="home">Home</option><option value="search">Search</option><option value="inbox">Inbox</option><option value="saved">Saved</option><option value="profile">Profile</option></soap-menu>
+  <soap-fab></soap-fab>
+  <soap-dial value="64"></soap-dial>
+  <soap-slider value="60"></soap-slider>
+  <soap-tags></soap-tags>
+  <soap-notifications></soap-notifications>
+  <soap-pull-refresh></soap-pull-refresh>
+</div>
+<script src="../slider/slider.js"></script><script src="../hold-button/hold-button.js"></script><script src="../pull-refresh/pull-refresh.js"></script><script src="../menu/menu.js"></script>
+<script src="../fab/fab.js"></script><script src="../notifications/notifications.js"></script><script src="../tags/tags.js"></script><script src="../dial/dial.js"></script>
+<script>
+// Pose every control part-way through what it does, on a stopped clock, so the card is the same every time.
+window.pose = () => {
+  const $ = (s) => document.querySelector(s), step = (n) => { for (let i = 0; i < n; i++) SoapFilm.clock.advance(1 / 60); };
+  SoapFilm.sound = false; SoapFilm.clock.manual = true;
+  step(30);
+  $('soap-fab').open = true;
+  $('soap-menu').value = 'saved';
+  $('soap-tags').merge('urgent', 'design');
+  $('soap-hold-button').engine.setHolding(true);
+  const s = $('soap-slider').engine; s.setDragging(true); s.dragTo(0.3); step(6); s.dragTo(0.6); step(4); s.setDragging(false);
+  const p = $('soap-pull-refresh'); p.addEventListener('refresh', (e) => e.detail.waitUntil(new Promise(() => {}))); p.refresh();
+  step(66);
+  return 'posed';
+};
+</script>
+</body>
+</html>

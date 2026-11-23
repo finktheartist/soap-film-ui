@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%2390f0ff%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%23ffb0f0%22/%3E%3Cstop offset=%221%22 stop-color=%22%23fff08a%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2213%22 fill=%22%23fff%22 stroke=%22url(%23g)%22 stroke-width=%223%22/%3E%3C/svg%3E">
+<title>Soap Film UI</title>
+<meta name="description" content="Eight UI controls made of soap film. Each is a single file with no dependencies.">
+<meta property="og:title" content="Soap Film UI">
+<meta property="og:description" content="Eight UI controls made of soap film: real thin-film colour, a fluid simulation stirred by your hand, bubbles that swell, coalesce, bud and pop.">
+<meta property="og:image" content="https://soap-film-ui.vercel.app/gallery/title.jpg">
+<style>
+  :root { --ink: #16161A; --mute: #888894; --line: rgba(22, 22, 26, .12); --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif; }
+  html { background: #FFFFFF; overflow-x: clip; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; color: var(--ink); font: 400 15px/1.45 var(--sans); overflow-x: clip; }
+  main { width: min(640px, 100vw - 32px); padding: 36px 0 56px; text-align: center; }
+  h1 { margin: 0; font-size: 22px; font-weight: 650; letter-spacing: -0.02em; }
+  .sub { margin: 6px 0 0; color: var(--mute); }
+  .stage { display: grid; justify-items: center; margin: 18px 0 6px; }
+  .stage > * { width: 100%; }
+  .hint { margin: 0 4px; color: var(--mute); font-size: 13px; }
+  .said { margin: 10px 4px 0; min-height: 1.45em; font-variant-numeric: tabular-nums; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 12px 4px 0; }
+  .pill { appearance: none; border: 1px solid var(--line); background: #FFFFFF; color: #555562; font: 600 12px/1 var(--sans); padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+  .pill:hover { color: var(--ink); } .pill[aria-pressed=false] { color: var(--mute); } .pill:disabled { opacity: .45; cursor: default; }
+  a { color: inherit; } :focus-visible { outline: 2px solid rgba(22, 22, 26, .35); outline-offset: 3px; }
+  code { font: 12.5px/1 ui-monospace, "SF Mono", Menlo, monospace; padding: 2px 6px; border-radius: 6px; background: #F4F4F6; }
+  body { display: block; }
+  header { width: min(1320px, 100vw - 32px); margin: 0 auto; padding: 56px 0 18px; text-align: center; }
+  header h1 { font-size: clamp(30px, 6vw, 52px); letter-spacing: -0.035em; font-weight: 680; }
+  header p { margin: 10px auto 0; max-width: 560px; color: #555562; font-size: 16px; }
+  header .links { margin-top: 18px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  #grid { width: min(1320px, 100vw - 32px); margin: 0 auto; padding: 18px 0 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 28px 40px; }
+  .piece { display: grid; justify-items: center; align-content: start; text-align: center; padding: 22px 0 4px; border-top: 1px solid var(--line); }
+  .piece h2 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: -0.015em; }
+  .tag { margin: 3px 0 0; color: var(--mute); font-size: 13px; }
+  .piece .stage { width: 100%; max-width: 640px; margin: 10px 0 0; }
+  .said { margin: 6px 0 0; min-height: 1.45em; color: #555562; font-size: 13px; }
+  .acts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px; }
+  footer { width: min(1320px, 100vw - 32px); margin: 0 auto; padding: 0 0 48px; text-align: center; color: var(--mute); font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Soap Film UI</h1>
+  <p>Eight ordinary controls made of soap film. Real thin-film colour, a fluid simulation your hand stirs, and bubbles that swell, coalesce, bud and pop. Each is one file with no dependencies.</p>
+  <div class="links"><a class="pill" href="https://github.com/finktheartist/soap-film-ui">Code on GitHub</a><button class="pill" type="button" id="sound" aria-pressed="true">Sound on</button></div>
+</header>
+<main id="grid" style="width:min(1320px, 100vw - 32px);text-align:center">
+  <section class="piece" data-c="slider">
+    <h2>Slider</h2>
+    <p class="tag">&lt;soap-slider&gt; · A slider whose fill is a pane of soap film.</p>
+    <div class="stage">
+      <soap-slider value="40" label="Volume"></soap-slider>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../slider/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+  <section class="piece" data-c="hold-button">
+    <h2>Hold to send</h2>
+    <p class="tag">&lt;soap-hold-button&gt; · A button you hold down, which blows a bubble.</p>
+    <div class="stage">
+      <soap-hold-button label="Hold to send" done-label="Sent"></soap-hold-button>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../hold-button/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+  <section class="piece" data-c="pull-refresh">
+    <h2>Pull to refresh</h2>
+    <p class="tag">&lt;soap-pull-refresh&gt; · A list you pull down, which fills the gap with soap.</p>
+    <div class="stage">
+      <soap-pull-refresh></soap-pull-refresh>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../pull-refresh/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+  <section class="piece" data-c="menu">
+    <h2>Bubble menu</h2>
+    <p class="tag">&lt;soap-menu&gt; · A five-bubble menu where the size flows to the one you pick.</p>
+    <div class="stage">
+      <soap-menu label="Main">
+        <option value="home" selected>Home</option>
+        <option value="search">Search</option>
+        <option value="inbox">Inbox</option>
+        <option value="saved">Saved</option>
+        <option value="profile">Profile</option>
+      </soap-menu>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../menu/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+  <section class="piece" data-c="fab">
+    <h2>Action button</h2>
+    <p class="tag">&lt;soap-fab&gt; · A floating action button that buds into four.</p>
+    <div class="stage">
+      <soap-fab label="Create">
+        <option value="camera" data-done="Camera">Camera</option>
+        <option value="note" data-done="New note">Note</option>
+        <option value="mic" data-done="Listening">Mic</option>
+        <option value="link" data-done="Link copied">Link</option>
+      </soap-fab>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../fab/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+  <section class="piece" data-c="notifications">
+    <h2>Notification stack</h2>
+    <p class="tag">&lt;soap-notifications&gt; · Notifications as a foam of bubbles.</p>
+    <div class="stage">
+      <soap-notifications></soap-notifications>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../notifications/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+  <section class="piece" data-c="tags">
+    <h2>Tag bubbles</h2>
+    <p class="tag">&lt;soap-tags&gt; · Tags you drag together to group them.</p>
+    <div class="stage">
+      <soap-tags label="Labels">
+        <option value="design">Design</option>
+        <option value="urgent">Urgent</option>
+        <option value="audio">Audio</option>
+        <option value="saved">Saved</option>
+      </soap-tags>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../tags/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+  <section class="piece" data-c="dial">
+    <h2>Rotary dial</h2>
+    <p class="tag">&lt;soap-dial&gt; · A knob that is a disc of soap film.</p>
+    <div class="stage">
+      <soap-dial value="28" label="Volume"></soap-dial>
+    </div>
+    <p class="said" aria-live="polite"></p>
+    <div class="acts"><a class="pill" href="../dial/">Try it</a><button class="pill" type="button" data-copy="cmd">Copy install</button><button class="pill" type="button" data-copy="prompt">Copy a prompt</button></div>
+  </section>
+</main>
+<footer>MIT licensed. Made by <a href="https://github.com/finktheartist">finktheartist</a>. Needs WebGL2; drawn for a white page.</footer>
+<script src="../slider/slider.js"></script>
+<script src="../hold-button/hold-button.js"></script>
+<script src="../pull-refresh/pull-refresh.js"></script>
+<script src="../menu/menu.js"></script>
+<script src="../fab/fab.js"></script>
+<script src="../notifications/notifications.js"></script>
+<script src="../tags/tags.js"></script>
+<script src="../dial/dial.js"></script>
+<script>
+// The gallery's own wiring. Each control is all in its own file.
+const REPO = 'finktheartist/soap-film-ui';
+const PROMPTS = {
+ "slider": "Add the Soap Film slider to my app. It is a single JavaScript file with no dependencies that defines a <soap-slider> element: a a range slider whose filled part is a pane of soap film inside a glass track. Drag it and the film stretches and swirls with the speed; let go and small bubbles bloom in its corners and along its edge, swell, and coalesce back into the pane.\n1. Get the file from @@SITE/slider/slider.js and save it in my project as slider.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-slider value=\"40\" label=\"Volume\"></soap-slider>.\n3. Read el.value; it fires input while it moves and change when it is let go. With a name it is sent with its form.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/slider/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it.",
+ "hold-button": "Add the Soap Film hold to send to my app. It is a single JavaScript file with no dependencies that defines a <soap-hold-button> element: a a press-and-hold button with a soap film stretched across it. Hold it and the film blows up into a bubble over the button; hold to the end and it pops in a spray and the button says Sent. Let go early and it sinks back.\n1. Get the file from @@SITE/hold-button/hold-button.js and save it in my project as hold-button.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-hold-button label=\"Hold to send\"></soap-hold-button>.\n3. Listen for confirm. type=\"submit\" submits its form when it is confirmed.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/hold-button/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it.",
+ "pull-refresh": "Add the Soap Film pull to refresh to my app. It is a single JavaScript file with no dependencies that defines a <soap-pull-refresh> element: a a card with a list you pull down to refresh. The gap that opens under the header fills with a flat sheet of soap film the shape of the opening; it swells and swirls while it loads, then pops across its whole width and the new row slides in.\n1. Get the file from @@SITE/pull-refresh/pull-refresh.js and save it in my project as pull-refresh.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-pull-refresh></soap-pull-refresh>.\n3. Set el.items to the rows, [{ initials, name, preview, time }]. Listen for refresh and call event.detail.waitUntil(promise), resolving with any new rows.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/pull-refresh/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it.",
+ "menu": "Add the Soap Film bubble menu to my app. It is a single JavaScript file with no dependencies that defines a <soap-menu> element: a a bar of five bubbles where the chosen one is bigger. Pick another and a soap bridge joins them and the size flows across, as if the soap were poured from one to the other; across several, the big bubble seems to travel down the bar.\n1. Get the file from @@SITE/menu/menu.js and save it in my project as menu.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-menu>…</soap-menu>.\n3. Put five <option>s inside, with values home, search, inbox, saved and profile for the icons. Read el.value and listen for change. Works in forms with a name.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/menu/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it.",
+ "fab": "Add the Soap Film action button to my app. It is a single JavaScript file with no dependencies that defines a <soap-fab> element: a a floating action button that is one plump bubble with a plus. Tap it and it buds into four smaller action bubbles, each pinching off on a neck of soap while the centre shrinks to keep the volume; tap one and it pops; tap the centre and they fuse back in.\n1. Get the file from @@SITE/fab/fab.js and save it in my project as fab.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-fab>…</soap-fab>.\n3. Put up to four <option>s inside, with values camera, note, mic and link for the icons. Listen for action, whose detail has index, value and label.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/fab/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it.",
+ "notifications": "Add the Soap Film notification stack to my app. It is a single JavaScript file with no dependencies that defines a <soap-notifications> element: a a stack of notifications drawn as a foam of soap bubbles. Neighbours flatten against each other along shared walls that meet at 120 degrees, as real foam does; flick one sideways or tap it and it pops, and the rest close up.\n1. Get the file from @@SITE/notifications/notifications.js and save it in my project as notifications.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-notifications></soap-notifications>.\n3. Call el.push({ icon, title, body, time }) to add one on top; up to four. Listen for dismiss.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/notifications/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it.",
+ "tags": "Add the Soap Film tag bubbles to my app. It is a single JavaScript file with no dependencies that defines a <soap-tags> element: a up to four tags as soap bubbles. Drag one into another and they coalesce into one bigger bubble holding both; pull a tag back out of a group, or double-click it, and it tears off with a pinch of soap and becomes its own bubble again.\n1. Get the file from @@SITE/tags/tags.js and save it in my project as tags.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-tags>…</soap-tags>.\n3. Put up to four <option>s inside. Read el.groups, an array of arrays of values, and listen for change. Works in forms with a name.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/tags/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it.",
+ "dial": "Add the Soap Film rotary dial to my app. It is a single JavaScript file with no dependencies that defines a <soap-dial> element: a a rotary knob that is a disc of soap film. Turn it and the film spins into a vortex that follows how fast you turn, with a tick at every step; at either end it bounces off a soft, rubbery stop.\n1. Get the file from @@SITE/dial/dial.js and save it in my project as dial.js. Do not rewrite it or split it up: its shaders and simulation are inside it.\n2. Load it with a plain script tag (not type=\"module\"), then use <soap-dial value=\"28\" label=\"Volume\"></soap-dial>.\n3. Read el.value; it fires input while it turns and change when it is let go. With a name it is sent with its form.\n4. It needs WebGL2 and is drawn for a pure white background (#FFFFFF); put it on white. It fills the width it is given, up to 640 pixels, and sets its own height.\n5. The README with every attribute, property and event is at https://github.com/finktheartist/soap-film-ui/blob/main/dial/README.md. Read it before wiring anything up.\nWhen you are done, show me where you put it and what listens to it. If something about it needs to look different, tell me instead of editing the shader or simulation code.\n\nThese components were made with the soap-film-ui skill: @@SITE/skills/soap-film-ui/SKILL.md (install with: npx skills add finktheartist/soap-film-ui). If I later ask for another control in the same style, use it."
+};
+const site = new URL('..', location.href).href.replace(/\/$/, '');
+const sound = document.getElementById('sound');
+sound.addEventListener('click', () => { SoapFilm.sound = !SoapFilm.sound; sound.setAttribute('aria-pressed', SoapFilm.sound); sound.textContent = SoapFilm.sound ? 'Sound on' : 'Sound off'; });
+for (const card of document.querySelectorAll('.piece')) {
+  const id = card.dataset.c, said = card.querySelector('.said'), el = card.querySelector('.stage > *');
+  const say = (t) => { said.textContent = t; };
+  card.querySelector('[data-copy=cmd]').addEventListener('click', (e) => copy(`npx shadcn add ${REPO}/${id}`, say, 'Install command copied.'));
+  card.querySelector('[data-copy=prompt]').addEventListener('click', (e) => copy(PROMPTS[id].replaceAll('@@SITE', site), say, 'Prompt copied.'));
+  // what each control says under it
+  el.addEventListener('change', () => say(el.groups ? el.groups.map((g) => g.join(' + ')).join('  ·  ') : 'Value: ' + el.value));
+  el.addEventListener('confirm', () => say('Confirmed.'));
+  el.addEventListener('action', (e) => say('Action: ' + e.detail.label));
+  el.addEventListener('dismiss', (e) => say('Dismissed: ' + e.detail.title));
+  el.addEventListener('refresh', (e) => { say('Loading…'); e.detail.waitUntil(new Promise((r) => setTimeout(() => r({ initials: 'NP', name: 'Noa Park', preview: 'Approved the release checklist', time: 'now' }), 900))); });
+  el.addEventListener('refreshed', (e) => say(e.detail.row ? 'New: ' + e.detail.row.name : 'Nothing new.'));
+  if (id === 'notifications') el.addEventListener('count', () => { if (el.count === 0) setTimeout(() => { el.items = [{ icon: 'calendar', title: 'Design review', body: 'Starts in 5 min · Studio B', time: 'now' }, { icon: 'chat', title: 'Jo Reyes', body: 'Sent the final prototype', time: '1m' }, { icon: 'check', title: 'Build passed', body: 'v2.4 deployed to staging', time: '3m' }]; }, 1400); });
+}
+// Copying needs the clipboard API, which plain http (other than localhost) does not have, so fall back to a selected textarea.
+async function copy(text, say, done) {
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch {
+    const t = Object.assign(document.createElement('textarea'), { value: text }); t.style.cssText = 'position:fixed;opacity:0'; document.body.append(t); t.select();
+    try { ok = document.execCommand('copy'); } catch {} t.remove();
+  }
+  say(ok ? done : 'Could not copy here.');
+}
+</script>
+</body>
+</html>

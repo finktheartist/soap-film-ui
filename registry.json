@@ -1,0 +1,186 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "soap-film-ui",
+  "homepage": "https://soap-film-ui.vercel.app",
+  "items": [
+    {
+      "name": "slider",
+      "type": "registry:file",
+      "title": "Soap Film Slider",
+      "description": "A range slider whose filled part is a pane of soap film inside a glass track. Drag it and the film stretches and swirls with the speed; let go and small bubbles bloom in its corners and along its edge, swell, and coalesce back into the pane. One WebGL2 file of about 95 KB, no dependencies, defines <soap-slider>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "slider",
+        "range",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "slider/slider.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/slider.js"
+        }
+      ],
+      "docs": "Soap Film Slider is a plain script that registers a custom element. Load /soap-film-ui/slider.js with a script tag (not a module), then use <soap-slider value=\"40\" label=\"Volume\"></soap-slider>. Read el.value; it fires input while it moves and change when it is let go. With a name it is sent with its form. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    },
+    {
+      "name": "hold-button",
+      "type": "registry:file",
+      "title": "Soap Film Hold to send",
+      "description": "A press-and-hold button with a soap film stretched across it. Hold it and the film blows up into a bubble over the button; hold to the end and it pops in a spray and the button says Sent. Let go early and it sinks back. One WebGL2 file of about 88 KB, no dependencies, defines <soap-hold-button>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "button",
+        "hold",
+        "confirm",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "hold-button/hold-button.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/hold-button.js"
+        }
+      ],
+      "docs": "Soap Film Hold to send is a plain script that registers a custom element. Load /soap-film-ui/hold-button.js with a script tag (not a module), then use <soap-hold-button label=\"Hold to send\"></soap-hold-button>. Listen for confirm. type=\"submit\" submits its form when it is confirmed. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    },
+    {
+      "name": "pull-refresh",
+      "type": "registry:file",
+      "title": "Soap Film Pull to refresh",
+      "description": "A card with a list you pull down to refresh. The gap that opens under the header fills with a flat sheet of soap film the shape of the opening; it swells and swirls while it loads, then pops across its whole width and the new row slides in. One WebGL2 file of about 92 KB, no dependencies, defines <soap-pull-refresh>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "pull-to-refresh",
+        "list",
+        "feed",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "pull-refresh/pull-refresh.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/pull-refresh.js"
+        }
+      ],
+      "docs": "Soap Film Pull to refresh is a plain script that registers a custom element. Load /soap-film-ui/pull-refresh.js with a script tag (not a module), then use <soap-pull-refresh></soap-pull-refresh>. Set el.items to the rows, [{ initials, name, preview, time }]. Listen for refresh and call event.detail.waitUntil(promise), resolving with any new rows. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    },
+    {
+      "name": "menu",
+      "type": "registry:file",
+      "title": "Soap Film Bubble menu",
+      "description": "A bar of five bubbles where the chosen one is bigger. Pick another and a soap bridge joins them and the size flows across, as if the soap were poured from one to the other; across several, the big bubble seems to travel down the bar. One WebGL2 file of about 78 KB, no dependencies, defines <soap-menu>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "menu",
+        "tabs",
+        "navigation",
+        "radio",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "menu/menu.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/menu.js"
+        }
+      ],
+      "docs": "Soap Film Bubble menu is a plain script that registers a custom element. Load /soap-film-ui/menu.js with a script tag (not a module), then use <soap-menu>…</soap-menu>. Put five <option>s inside, with values home, search, inbox, saved and profile for the icons. Read el.value and listen for change. Works in forms with a name. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    },
+    {
+      "name": "fab",
+      "type": "registry:file",
+      "title": "Soap Film Action button",
+      "description": "A floating action button that is one plump bubble with a plus. Tap it and it buds into four smaller action bubbles, each pinching off on a neck of soap while the centre shrinks to keep the volume; tap one and it pops; tap the centre and they fuse back in. One WebGL2 file of about 89 KB, no dependencies, defines <soap-fab>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "fab",
+        "button",
+        "menu",
+        "speed-dial",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "fab/fab.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/fab.js"
+        }
+      ],
+      "docs": "Soap Film Action button is a plain script that registers a custom element. Load /soap-film-ui/fab.js with a script tag (not a module), then use <soap-fab>…</soap-fab>. Put up to four <option>s inside, with values camera, note, mic and link for the icons. Listen for action, whose detail has index, value and label. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    },
+    {
+      "name": "notifications",
+      "type": "registry:file",
+      "title": "Soap Film Notification stack",
+      "description": "A stack of notifications drawn as a foam of soap bubbles. Neighbours flatten against each other along shared walls that meet at 120 degrees, as real foam does; flick one sideways or tap it and it pops, and the rest close up. One WebGL2 file of about 82 KB, no dependencies, defines <soap-notifications>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "notifications",
+        "toast",
+        "stack",
+        "list",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "notifications/notifications.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/notifications.js"
+        }
+      ],
+      "docs": "Soap Film Notification stack is a plain script that registers a custom element. Load /soap-film-ui/notifications.js with a script tag (not a module), then use <soap-notifications></soap-notifications>. Call el.push({ icon, title, body, time }) to add one on top; up to four. Listen for dismiss. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    },
+    {
+      "name": "tags",
+      "type": "registry:file",
+      "title": "Soap Film Tag bubbles",
+      "description": "Up to four tags as soap bubbles. Drag one into another and they coalesce into one bigger bubble holding both; pull a tag back out of a group, or double-click it, and it tears off with a pinch of soap and becomes its own bubble again. One WebGL2 file of about 84 KB, no dependencies, defines <soap-tags>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "tags",
+        "chips",
+        "group",
+        "drag",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "tags/tags.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/tags.js"
+        }
+      ],
+      "docs": "Soap Film Tag bubbles is a plain script that registers a custom element. Load /soap-film-ui/tags.js with a script tag (not a module), then use <soap-tags>…</soap-tags>. Put up to four <option>s inside. Read el.groups, an array of arrays of values, and listen for change. Works in forms with a name. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    },
+    {
+      "name": "dial",
+      "type": "registry:file",
+      "title": "Soap Film Rotary dial",
+      "description": "A rotary knob that is a disc of soap film. Turn it and the film spins into a vortex that follows how fast you turn, with a tick at every step; at either end it bounces off a soft, rubbery stop. One WebGL2 file of about 63 KB, no dependencies, defines <soap-dial>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": [
+        "dial",
+        "knob",
+        "range",
+        "webgl",
+        "animation"
+      ],
+      "files": [
+        {
+          "path": "dial/dial.js",
+          "type": "registry:file",
+          "target": "~/public/soap-film-ui/dial.js"
+        }
+      ],
+      "docs": "Soap Film Rotary dial is a plain script that registers a custom element. Load /soap-film-ui/dial.js with a script tag (not a module), then use <soap-dial value=\"28\" label=\"Volume\"></soap-dial>. Read el.value; it fires input while it turns and change when it is let go. With a name it is sent with its form. Drawn for a white page; needs WebGL2. More: https://soap-film-ui.vercel.app"
+    }
+  ]
+}

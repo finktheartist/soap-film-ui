@@ -1,0 +1,34 @@
+# Soap Film UI
+
+> Eight UI controls made of soap film: real thin-film interference colour, a fluid simulation stirred by your hand, and bubbles that swell, coalesce, bud and pop. Each is one plain script that registers a custom element, with its WebGL2 shaders and its simulation inside it: no dependencies, no build step, no other files to fetch. MIT licensed.
+
+Live gallery: https://soap-film-ui.vercel.app
+Source: https://github.com/finktheartist/soap-film-ui
+
+## Drop-in components
+
+Each is one plain script that registers a custom element. Load it with a script tag, not as a module. Do not rewrite or split the file. Each carries a copy of the shared core; the first one loaded sets window.SoapFilm and the rest reuse it, so any mix shares one clock and one sound engine.
+
+- [Slider](https://soap-film-ui.vercel.app/slider/slider.js): A range slider whose filled part is a pane of soap film inside a glass track. Drag it and the film stretches and swirls with the speed; let go and small bubbles bloom in its corners and along its edge, swell, and coalesce back into the pane. Use <soap-slider value="40" label="Volume"></soap-slider>. Read el.value; it fires input while it moves and change when it is let go. With a name it is sent with its form. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/slider/README.md)
+- [Hold to send](https://soap-film-ui.vercel.app/hold-button/hold-button.js): A press-and-hold button with a soap film stretched across it. Hold it and the film blows up into a bubble over the button; hold to the end and it pops in a spray and the button says Sent. Let go early and it sinks back. Use <soap-hold-button label="Hold to send"></soap-hold-button>. Listen for confirm. type="submit" submits its form when it is confirmed. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/hold-button/README.md)
+- [Pull to refresh](https://soap-film-ui.vercel.app/pull-refresh/pull-refresh.js): A card with a list you pull down to refresh. The gap that opens under the header fills with a flat sheet of soap film the shape of the opening; it swells and swirls while it loads, then pops across its whole width and the new row slides in. Use <soap-pull-refresh></soap-pull-refresh>. Set el.items to the rows, [{ initials, name, preview, time }]. Listen for refresh and call event.detail.waitUntil(promise), resolving with any new rows. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/pull-refresh/README.md)
+- [Bubble menu](https://soap-film-ui.vercel.app/menu/menu.js): A bar of five bubbles where the chosen one is bigger. Pick another and a soap bridge joins them and the size flows across, as if the soap were poured from one to the other; across several, the big bubble seems to travel down the bar. Use <soap-menu>…</soap-menu>. Put five <option>s inside, with values home, search, inbox, saved and profile for the icons. Read el.value and listen for change. Works in forms with a name. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/menu/README.md)
+- [Action button](https://soap-film-ui.vercel.app/fab/fab.js): A floating action button that is one plump bubble with a plus. Tap it and it buds into four smaller action bubbles, each pinching off on a neck of soap while the centre shrinks to keep the volume; tap one and it pops; tap the centre and they fuse back in. Use <soap-fab>…</soap-fab>. Put up to four <option>s inside, with values camera, note, mic and link for the icons. Listen for action, whose detail has index, value and label. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/fab/README.md)
+- [Notification stack](https://soap-film-ui.vercel.app/notifications/notifications.js): A stack of notifications drawn as a foam of soap bubbles. Neighbours flatten against each other along shared walls that meet at 120 degrees, as real foam does; flick one sideways or tap it and it pops, and the rest close up. Use <soap-notifications></soap-notifications>. Call el.push({ icon, title, body, time }) to add one on top; up to four. Listen for dismiss. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/notifications/README.md)
+- [Tag bubbles](https://soap-film-ui.vercel.app/tags/tags.js): Up to four tags as soap bubbles. Drag one into another and they coalesce into one bigger bubble holding both; pull a tag back out of a group, or double-click it, and it tears off with a pinch of soap and becomes its own bubble again. Use <soap-tags>…</soap-tags>. Put up to four <option>s inside. Read el.groups, an array of arrays of values, and listen for change. Works in forms with a name. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/tags/README.md)
+- [Rotary dial](https://soap-film-ui.vercel.app/dial/dial.js): A rotary knob that is a disc of soap film. Turn it and the film spins into a vortex that follows how fast you turn, with a tick at every step; at either end it bounces off a soft, rubbery stop. Use <soap-dial value="28" label="Volume"></soap-dial>. Read el.value; it fires input while it turns and change when it is let go. With a name it is sent with its form. [Docs](https://github.com/finktheartist/soap-film-ui/blob/main/dial/README.md)
+
+Install any one with the shadcn CLI: `npx shadcn add finktheartist/soap-film-ui/NAME`, where NAME is slider, hold-button, pull-refresh, menu, fab, notifications, tags, dial. The file lands in `public/soap-film-ui/`.
+
+They need WebGL2 and are drawn for a pure white page. Each fills the width it is given, up to 640 pixels. Each has a real input or button inside it for the keyboard and screen readers. They make soft synthesized sound after the first tap; SoapFilm.sound = false mutes the page, a muted attribute mutes one.
+
+## The skill
+
+- [soap-film-ui skill](https://soap-film-ui.vercel.app/skills/soap-film-ui/SKILL.md): the workflow and rules these were made by. Install with `npx skills add finktheartist/soap-film-ui`.
+- [core.js](https://soap-film-ui.vercel.app/skills/soap-film-ui/core.js): the shared core (one clock, the synthesized sound, a custom-element base class that builds and resizes a WebGL engine).
+- [starter.html](https://soap-film-ui.vercel.app/skills/soap-film-ui/starter.html): the smallest whole example, a soap-film toggle with its own shader and fluid grid.
+- [look.mjs](https://soap-film-ui.vercel.app/skills/soap-film-ui/look.mjs): stops the clock, steps an interaction to chosen moments and saves the frames side by side.
+
+## How they were made
+
+- [making-of/README.md](https://soap-film-ui.vercel.app/making-of/README.md): the physics behind each control and how the look was found.
